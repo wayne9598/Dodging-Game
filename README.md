@@ -1,6 +1,6 @@
 # Dodging game
 
-A simple game created with JavaScript to see how fast if your reaction speed!
+A simple game created with Python to see how fast if your reaction speed!
 
 # Requirements
 
