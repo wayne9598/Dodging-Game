@@ -13,9 +13,9 @@ window = pygame.display.set_mode((window_x, window_y))
 pygame.display.set_caption('Dodge Game')
 red = (255, 0, 0)
 black = (0, 0, 0)
-rocket_image = pygame.image.load('smallreocket.png')
-start_image = pygame.image.load('start.png')
-gameover_image = pygame.image.load('gameover.png')
+rocket_image = pygame.image.load('imgs/smallreocket.png')
+start_image = pygame.image.load('imgs/start.png')
+gameover_image = pygame.image.load('imgs/gameover.png')
 num_of_balls = 0
 difficulty = 0
 speed = 0
@@ -43,8 +43,6 @@ class ball(object):
         self.y = 250
         self.radius = 5
         self.speed = speed
-        # self.x_vel = random.randint(-4,5)
-        # self.y_vel = random.randint(-1, 1) * math.sqrt(self.speed**2 - self.x_vel**2)
         self.x_vel_vec = random.uniform(-1,1)
         self.y_vel_vec = random.choice([-1,1]) * math.sqrt(1-self.x_vel_vec**2)
         self.x_vel = self.speed * self.x_vel_vec
@@ -69,11 +67,6 @@ class game_state(object):
         self.speed = 0
 
     def main_game(self):
-        # for specific_ball in balls:
-        #     if 0 < specific_ball.x < window_x and 0 < specific_ball.y < window_y:
-        #         specific_ball.move()
-        #     else:
-        #         balls.pop(balls.index(specific_ball))
 
         for specific_ball in balls:
             specific_ball.move()
@@ -167,10 +160,6 @@ def has_collision():
 def draw_screen():
     window.fill(black)
     for player in players:
-        # if players.index(player) == 0:
-        #     player.rocket_x = 375
-        # if players.index(player) == 1:
-        #     player.rocket_x = 125
         player.draw()
 
     timer = font.render('Time: ' + str(game_state.min) + ':' + str(game_state.sec), 1, (255,255,255))
@@ -181,68 +170,6 @@ def draw_screen():
     pygame.display.update()
 
 
-# # Main Loop
-# running = True
-# # rocket = rocket()
-# players = []
-# balls = []
-# game_state = game_state()
-# font = pygame.font.SysFont('comicsans', 20)
-# clock = pygame.time.Clock()
-#
-# while running:
-#     clock.tick(20)
-#
-#     for event in pygame.event.get():
-#         if event.type == pygame.QUIT:
-#             running = False
-#
-#     keys = pygame.key.get_pressed()
-#     if keys[pygame.K_SPACE] and game_state.state == 'intro':
-#         game_state.min = 0
-#         game_state.sec = 0
-#         balls.clear()
-#         players.clear()
-#         num_of_players = 1
-#         #HERE
-#         game_state.state = 'main_game'
-#     elif keys[pygame.K_2] and game_state.state == 'intro':
-#         game_state.min = 0
-#         game_state.sec = 0
-#         balls.clear()
-#         players.clear()
-#         num_of_players = 2
-#         # HERE
-#         game_state.state = 'main_game'
-#
-#     if keys[pygame.K_SPACE] and game_state.state == 'lose':
-#         game_state.state = 'intro'
-#
-#     for player in players:
-#         if players.index(player) == 0:
-#             if keys[pygame.K_LEFT] and player.rocket_x > 0:
-#                 player.rocket_x -= player.rocket_vel
-#             if keys[pygame.K_RIGHT] and player.rocket_x < window_x - player.rocket_width:
-#                 player.rocket_x += player.rocket_vel
-#             if keys[pygame.K_UP] and player.rocket_y > 0:
-#                 player.rocket_y -= player.rocket_vel
-#             if keys[pygame.K_DOWN] and player.rocket_y < window_y - player.rocket_height:
-#                 player.rocket_y += player.rocket_vel
-#         if players.index(player) == 1:
-#             if keys[pygame.K_a] and player.rocket_x > 0:
-#                 player.rocket_x -= player.rocket_vel
-#             if keys[pygame.K_d] and player.rocket_x < window_x - player.rocket_width:
-#                 player.rocket_x += player.rocket_vel
-#             if keys[pygame.K_w] and player.rocket_y > 0:
-#                 player.rocket_y -= player.rocket_vel
-#             if keys[pygame.K_s] and player.rocket_y < window_y - player.rocket_height:
-#                 player.rocket_y += player.rocket_vel
-#
-#     game_state.state_manager()
-#
-#
-# pygame.quit()
-
 game_state = game_state()
 players = []
 balls = []
@@ -250,9 +177,6 @@ font = pygame.font.SysFont('comicsans', 20)
 
 
 def main():
-
-
-
 
     # Main Loop
     running = True
@@ -274,15 +198,14 @@ def main():
             balls.clear()
             players.clear()
             num_of_players = 1
-            #HERE
             game_state.state = 'main_game'
+
         elif keys[pygame.K_2] and game_state.state == 'intro':
             game_state.min = 0
             game_state.sec = 0
             balls.clear()
             players.clear()
             num_of_players = 2
-            # HERE
             game_state.state = 'main_game'
 
         if keys[pygame.K_SPACE] and game_state.state == 'lose':
@@ -314,29 +237,3 @@ def main():
     pygame.quit()
 
 main()
-
-
-def run(config_path):
-    config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction,
-                                neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                                config_path)
-    p =neat.Population(config)
-    p.add_reporter(neat.StdOutReporter(True))
-    stats = neat.StatisticsReporter()
-    p.add_reporter(stats)
-    winner = p.run(main,50)
-
-
-
-
-if __name__== '__main__':
-    local_dir = os.path.dirname(__file__)
-    config_path = os.path.join(local_dir, "config-feedforward.txt")
-
-
-
-
-
-
-
-

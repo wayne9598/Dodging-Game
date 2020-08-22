@@ -61,8 +61,6 @@ class ball(object):
         self.y = 250
         self.radius = 5
         self.speed = 10
-        # self.x_vel = random.randint(-4,5)
-        # self.y_vel = random.randint(-1, 1) * math.sqrt(self.speed**2 - self.x_vel**2)
         self.x_vel_vec = random.uniform(-1,1)
         self.y_vel_vec = random.choice([-1,1]) * math.sqrt(1-self.x_vel_vec**2)
         self.x_vel = self.speed * self.x_vel_vec
@@ -82,7 +80,6 @@ class game_state(object):
         self.min = 0
         self.sec = 0
         self.num_of_balls = 0
-        # self.num_of_players = num_of_players
         self.difficulty = 0
         self.speed = 0
 
@@ -91,52 +88,19 @@ class game_state(object):
         for specific_ball in balls:
             specific_ball.move()
             if specific_ball.x <= 0 or specific_ball.x >= 500:
-                # specific_ball.x_vel = specific_ball.x_vel * -1
+                specific_ball.x_vel = specific_ball.x_vel * -1
                 balls.remove(specific_ball)
             elif specific_ball.y <= 0 or specific_ball.y >= 500:
-                # specific_ball.y_vel = specific_ball.y_vel * -1
+                specific_ball.y_vel = specific_ball.y_vel * -1
                 balls.remove(specific_ball)
 
-
-        # if has_collision():
-        #     pass
-            # game_state.collision()
         self.num_of_balls = 25
         self.difficulty = 10
         self.speed = 10
 
-        # if game_state.sec <= 10 and game_state.min < 1:
-        #     self.num_of_balls = 8
-        #     self.difficulty = 5
-        #     self.speed = 10
-        # if game_state.sec > 10 and game_state.min < 1:
-        #     self.num_of_balls = 10
-        #     self.difficulty = 10
-        #     self.speed = 10
-        # if game_state.sec > 15 and game_state.min < 1:
-        #     self.num_of_balls = 15
-        #     self.difficulty = 10
-        #     self.speed = 10
-
         if len(balls) < self.num_of_balls:
             for i in range(self.num_of_balls):
                 balls.append(ball())
-
-        # if len(players) < self.num_of_players:
-        #     for i in range(self.num_of_players):
-        #         if self.num_of_players == 1:
-        #             x = 250
-        #         elif self.num_of_players ==2:
-        #             if i == 0:
-        #                 x = 375
-        #             if i == 1:
-        #                 x = 125
-        #
-        #         players.append(rocket(x))
-
-        # if len(players) < self.num_of_players:
-        #     x = 250
-        #     players.append(rocket(x))
 
         if game_state.sec > 60:
             game_state.min += 1
@@ -167,25 +131,6 @@ class game_state(object):
         print('hit')
         game_state.state = 'lose'
 
-
-# def has_collision():
-#     for ball in balls:
-#         for player in players:
-#
-#             distance_between_centers = math.sqrt (  (   ball.x - (player.rocket_x + 0.5* player.rocket_width)  ) ** 2 + ( ball.y - (player.rocket_y + 0.5 * player.rocket_height) )** 2  )
-#             if player.rocket_x < ball.x < player.rocket_x + player.rocket_width:
-#                 if distance_between_centers <= (ball.radius + player.rocket_height * 0.5):
-#                     return True
-#
-#             elif player.rocket_y < ball.y < player.rocket_y + player.rocket_height:
-#                 if distance_between_centers <= (ball.radius + player.rocket_width * 0.5):
-#                     return True
-#
-#             else:
-#                 if distance_between_centers <= (ball.radius + player.rocket_width * 0.5 * math.sqrt(2)):
-#                     return True
-#
-#     return False
 
 def has_collision(player):
     for ball in balls:
@@ -244,14 +189,9 @@ def main(genomes, config):
         g.fitness = 0
         ge.append(g)
 
-    # players.append(rocket(250))
-
-
 
     # Main Loop
     running = True
-    # rocket = rocket()
-
     clock = pygame.time.Clock()
 
     while running:
@@ -262,43 +202,10 @@ def main(genomes, config):
                 players.pop(x)
                 nets.pop(x)
                 ge.pop(x)
-            # elif player.rocket_x <= 0 or player.rocket_x + player.rocket_width >= window_x or player.rocket_y + player.rocket_height <= 0 or player.rocket_y >= window_y:
-            #     ge[x].fitness -= 5
-            #     players.pop(x)
-            #     nets.pop(x)
-            #     ge.pop(x)
-                # player.rocket_x = 250
-                # game_state.state = 'lose'
-
+         
         clock.tick(20)
 
-        # for x, player in enumerate(players):
-        #     ge[x].fitness += 0.01
-        #     for ball in balls:
-        #         distance = ((player.rocket_x-ball.x)**2 + (player.rocket_y-ball.y)**2)**0.5
-        #
-        #         # output = nets[x].activate((player.rocket_x, player.rocket_y, ball.x, ball.y))
-        #         output = nets[x].activate((player.rocket_x, player.rocket_y, ball.x, ball.y, ball.x_vel_vec, ball.y_vel_vec))
-        #
-        #         if output[0] > 0.5:
-        #             # player.rocket_x -= player.rocket_vel
-        #             player.move_up()
-        #             ge[x].fitness += 0.1
-        #         if output[1] > 0.5:
-        #             # player.rocket_x += player.rocket_vel
-        #             player.move_down()
-        #             ge[x].fitness += 0.1
-        #         if output[2] > 0.5:
-        #             # player.rocket_y -= player.rocket_vel
-        #             player.move_right()
-        #             ge[x].fitness += 0.1
-        #         if output[3] > 0.5:
-        #             # player.rocket_y += player.rocket_vel
-        #             player.move_left()
-        #             ge[x].fitness += 0.1
-        #
-        #         if output[0] <= 0.5 and output[1] <= 0.5 and output[2] <= 0.5 and output[3] <= 0.5:
-        #             ge[x].fitness -= 2
+       
         game_state.state_manager()
 
         ball_input = []
@@ -307,10 +214,7 @@ def main(genomes, config):
             ball_input.append(ball.y)
             ball_input.append(ball.x_vel_vec)
             ball_input.append(ball.y_vel_vec)
-            # ball_input["ball{0}_x".format(index)] = ball.x
-            # ball_input["ball{0}_y".format(index)] = ball.y
-            # ball_input["ball{0}_x_vec".format(index)] = ball.x_vel_vec
-            # ball_input["ball{0}_y_vec".format(index)] = ball.y_vel_vec
+        
 
         if len(balls) > 0:
             for x, player in enumerate(players):
@@ -342,40 +246,20 @@ def main(genomes, config):
                 ))
 
                 if output[0] > 0.5:
-                    # player.rocket_x -= player.rocket_vel
                     player.move_up()
                     ge[x].fitness += 0.05
                 if output[1] > 0.5:
-                    # player.rocket_x += player.rocket_vel
                     player.move_down()
                     ge[x].fitness += 0.05
                 if output[2] > 0.5:
-                    # player.rocket_y -= player.rocket_vel
                     player.move_right()
                     ge[x].fitness += 0.05
                 if output[3] > 0.5:
-                    # player.rocket_y += player.rocket_vel
                     player.move_left()
                     ge[x].fitness += 0.05
 
-                # if output[0] <= 0.5 and output[1] <= 0.5 and output[2] <= 0.5 and output[3] <= 0.5:
-                #     ge[x].fitness -= 2
-
-
-
-
-
-
-
-
         if len(players) == 0:
             return
-            # running = False
-            # break
-
-
-
-
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -416,32 +300,7 @@ def main(genomes, config):
         if game_state.min > 30:
             pickle.dump(nets[0],open("best.pickle", "wb"))
             break
-            # if players.index(player) == 0:
-            #     if keys[pygame.K_LEFT] and player.rocket_x > 0:
-            #         player.rocket_x -= player.rocket_vel
-            #     if keys[pygame.K_RIGHT] and player.rocket_x < window_x - player.rocket_width:
-            #         player.rocket_x += player.rocket_vel
-            #     if keys[pygame.K_UP] and player.rocket_y > 0:
-            #         player.rocket_y -= player.rocket_vel
-            #     if keys[pygame.K_DOWN] and player.rocket_y < window_y - player.rocket_height:
-            #         player.rocket_y += player.rocket_vel
-            # if players.index(player) == 1:
-            #     if keys[pygame.K_a] and player.rocket_x > 0:
-            #         player.rocket_x -= player.rocket_vel
-            #     if keys[pygame.K_d] and player.rocket_x < window_x - player.rocket_width:
-            #         player.rocket_x += player.rocket_vel
-            #     if keys[pygame.K_w] and player.rocket_y > 0:
-            #         player.rocket_y -= player.rocket_vel
-            #     if keys[pygame.K_s] and player.rocket_y < window_y - player.rocket_height:
-            #         player.rocket_y += player.rocket_vel
-
-        # game_state.state_manager()
-
-
-    # pygame.quit()
-
-# main()
-
+        
 
 def run(config_path):
     config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction,
@@ -455,17 +314,9 @@ def run(config_path):
     print('\nBest genome:\n{!s}'.format(winner))
 
 
-
-
 if __name__== '__main__':
     local_dir = os.path.dirname(__file__)
     config_path = os.path.join(local_dir, "config-feedforward.txt")
     run(config_path)
-
-
-
-
-
-
 
 
